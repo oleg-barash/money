@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Контроль доходов и расходов</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Калькулятор расходов</h1>
+<div>
+    <label>Остаток &nbsp </label><input type="text" /> <br> <br>
+    <a href="income.html"><input type="submit" class="action-button green animate " value="Ввести доходы"></a>
+    <a href="costs.html"><input type="submit" class="action-button yellow animate" value="Ввести расходы"></a>
+    <form method="get">
+        <div> <label for="interval">Укажите период: </label>
+            <label for="interval">&nbsp c &nbsp<input type="date" id="from" name="interval"> </label>
+            <label for="interval">&nbsp по &nbsp <input type="date" id="to" name="interval"></label></div>
+        <button type="button" id="load">Загрузить</button>
+        <table>
+            <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Доходы</th>
+                <th>Расходы</th>
+                <th>Баланс</th>
+            </tr>
+            </thead>
+            <tbody id="dataTable">
+            </tbody>
+        </table>
+    </form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"  type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/locale/ru.js"  type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.js"  type="text/javascript"></script>
+
+<script src="site.js" type="text/javascript"></script>
+</body>
+
+</html>

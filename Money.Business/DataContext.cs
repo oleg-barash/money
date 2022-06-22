@@ -19,7 +19,7 @@ namespace Money.Business
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 conn.Open();
-                return conn.Query<Action>("SELECT * FROM public.\"Actions\"");
+                return conn.Query<Action>($"SELECT * FROM public.\"actions\"");
             }
         }
 
@@ -28,7 +28,7 @@ namespace Money.Business
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 conn.Open();
-                return conn.QuerySingle<Action>($@"SELECT * FROM public.""Actions"" WHERE ""Id"" = {id}");
+                return conn.QuerySingle<Action>($@"SELECT * FROM public.""actions"" WHERE ""id"" = {id}");
             }
         }
 
@@ -37,7 +37,7 @@ namespace Money.Business
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 conn.Open();
-                return conn.Query<CreditPayment>($"SELECT * FROM public.\"Payments\"");
+                return conn.Query<CreditPayment>($"SELECT * FROM public.\"payments\"");
             }
         }
 
@@ -46,20 +46,25 @@ namespace Money.Business
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 conn.Open();
-                return conn.Query<Credit>($"SELECT * FROM public.\"Credits\"");
+                return conn.Query<Credit>($"SELECT * FROM public.\"credits\"");
             }
         }
         
-
-
         public async Task<int> AddAction(Action action)
         {
             using (var conn = new NpgsqlConnection(_connectionString))
             {
                 conn.Open();
-                return await conn.ExecuteAsync($@"INSERT INTO ""Actions"" (""Type"",""Value"",""Description"",""Date"",""Category"",""Credit"") VALUES(@Type,@Value,@Description,@Date, @Category, @Credit)", action);
+                return await conn.ExecuteAsync($@"INSERT INTO ""actions"" (""type"",""value"",""description"",""date"",""category"",""credit"") VALUES(@Type,@Value,@Description,@Date, @Category, @Credit)", action);
             }
         }
-
+        public async Task<int> AddCredit(Credit credit)
+        {
+            using (var conn = new NpgsqlConnection(_connectionString))
+            {
+                conn.Open();
+                return await conn.ExecuteAsync($@"INSERT INTO ""credits"" (""sum"",""duration"",""description"",""date"",""interest"",""paymentvalue"") VALUES(@Sum,@Duration,@Description,@Date, @Interest, @Paymentvalue)", credit);
+            }
+        }
     }
 }

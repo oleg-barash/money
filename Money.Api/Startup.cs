@@ -121,16 +121,38 @@ namespace Money.Api
                 DataContext context = builder.ApplicationServices.GetService<DataContext>();
                 builder.Run(async httpContext =>
                 {
-                    var credits = context.GetCredits().ToList();
-                    if (credits.Any())
+                                        switch (httpContext.Request.Method)
                     {
-                        CreditCalculator calculator = new CreditCalculator(context);
-                        var res = new List<Action>();
-                        foreach (var credit in credits)
-                        {
-                            res.AddRange(calculator.GetPaymentsForCredit(credit));
-                        }
-                        await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(res));
+                        case "GET":
+                            var credits = context.GetCredits().ToList();
+                            if (credits.Any())
+                            {
+                                CreditCalculator calculator = new CreditCalculator(context);
+                                var res = new List<Action>();
+                                foreach (var credit in credits)
+                                {
+                                    res.AddRange(calculator.GetPaymentsForCredit(credit));
+                                }
+                                await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(res));
+                            }
+                            break;
+                        case "POST":
+                            var form = await httpContext.Request.ReadFormAsync();
+                            Credit newCredit = new Credit
+                            {
+                                Date = DateTime.Parse(form["Date"]),
+                                Sum = decimal.Parse(form["Sum"]),
+                                Duration = int.Parse(form["Duration"]),
+                                Interest = decimal.Parse(form["Interest"]),
+                                Description = form["Description"],
+                                PaymentValue = decimal.Parse(form["PaymentValue"])
+                            };
+                            await context.AddCredit(newCredit);
+                            httpContext.Response.StatusCode = (int)HttpStatusCode.Created;
+                            break;
+                        default:
+                            httpContext.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+                            break;
                     }
                 });
             });

@@ -1,5 +1,7 @@
 .vs/
+.idea/
 **/bin/
 **/obj/
 **/*.csproj.user
 **/*.pubxml.user
+postgres-data/

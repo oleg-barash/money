@@ -32,7 +32,7 @@ namespace Money.Business
                     Value = credit.PaymentValue > sum ? sum : credit.PaymentValue
                 };
                 yield return action;
-                decimal percents = Math.Round(sum * (decimal)(days * dailyPercent / 100), 2);
+                decimal percents = Math.Round(sum * ((decimal)days * dailyPercent / 100), 2);
                 sum -= (credit.PaymentValue - percents);
                 if (sum < 0) break;
                 date = payment.Date;
@@ -42,13 +42,13 @@ namespace Money.Business
 
         private decimal GetCreditSum(Credit credit, List<Action> actions)
         {
-            var sum = credit.Summ;
+            var sum = credit.Sum;
             var date = credit.Date;
             var dailyPercent = credit.Interest / 365;
             foreach (var action in actions)
             {
                 var days = (action.Date - date).TotalDays;
-                decimal percents = Math.Round(sum * (decimal) (days * dailyPercent / 100), 2);
+                decimal percents = Math.Round(sum * ((decimal)days * dailyPercent / 100), 2);
                 sum -= action.Value - percents;
             }
             return sum;
